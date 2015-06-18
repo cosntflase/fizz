@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en" ng-app>
+
+    <head>
+        <title>Chat Example</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/css/bootstrap-responsive.min.css">
+        <link rel="stylesheet" href="/css/fizz.css">
+    </head>
+    
+    <body>
+        
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="/lib/jquery.min.js"></script>
+        <script src="/lib/bootstrap.min.js"></script>
+        <script src="/lib/angular.min.js"></script>
+        
+        <script src="/js/fizz.js"></script>
+        <script src="/js/controllers/index.js"></script>
+    
+        <link rel="import" href="/fragments/login/login.html">
+        <link rel="import" href="/fragments/logout/logout.html">
+        <link rel="import" href="/fragments/register/register.html">
+        <link rel="import" href="/fragments/unregister/unregister.html">
+        <link rel="import" href="/fragments/project-browser/project-browser.html">
+        <link rel="import" href="/fragments/file-browser/file-browser.html">
+        <link rel="import" href="/fragments/editor/editor.html">
+        
+        <div ng-controller="IndexController">
+            <div ng-show="toggle">
+                <panel id="login" fragment="Fizz-Login"></panel>
+                <span>Not a member yet? <a class="pointer" ng-click="toggleLoginRegister()">Register</a></span>
+            </div>
+            <div ng-hide="toggle">
+                <panel id="logout" fragment="Fizz-Register"></panel>
+                <span>Already a member? <a class="pointer" ng-click="toggleLoginRegister()">Login</a></span>
+            </div>
+        </div>
+        
+        <script>
+            /* global Fizz angular */
+            angular.module('Fizz', ['ui.bootstrap']);
+            Fizz.initialize();
+        </script>
+    
+    </body>
+
+</html>

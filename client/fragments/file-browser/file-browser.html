@@ -1,0 +1,12 @@
+<script src="file-browser.js"></script>
+<link rel="stylesheet" href="file-browser.css" />
+
+<fragment name="Fizz-File-Browser">
+    
+    <div>
+        <div ng-repeat="file in files">
+            <span class="pointer" ng-click="selectFile(file)">{{file}}</span>
+        </div>
+    </div>
+    
+</fragment>
