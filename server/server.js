@@ -11,7 +11,7 @@ var session = require("express-session")({
   });
 var sharedsession = require("express-socket.io-session")(session);
 
-//var fizz = require('fizz');
+var fizz = require('./fizz/fizz.js');
 
 var router = express();
 var server = http.createServer(router);
@@ -31,7 +31,7 @@ io.on('connection', function(socket) {
     //console.log(socket.request.sessionID);
     sockets.push(socket);
     
-    //fizz.socket(socket);
+    fizz.socket(socket);
 
     socket.on('disconnect', function() {
         sockets.splice(sockets.indexOf(socket), 1);

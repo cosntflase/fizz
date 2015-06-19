@@ -12,8 +12,17 @@
         "express-socket.io-session": "*",
         "socket.io": "*",
         "mkdirp": "*",
-        "mongoose": "*",
-        "jamjs": "*"
+        "mongoose": "*"
+    },
+    "jam": {
+        "packageDir": "../client/lib",
+        "baseUrl": "../client",
+        "dependencies": {
+            "jquery": "*",
+            "angular": "*",
+            "bootstrap": "*",
+            "socket.io": "*"
+        }
     },
     "scripts": {
         "postinstall": "/bin/bash post.sh"

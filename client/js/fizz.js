@@ -1,110 +1,114 @@
-/* global io angular */
-
-var Fizz = {};
-(function (exports) {
+/* global io */
+define(['jquery', 'angular'/*, 'socketio'*/], function($, angular/*, io*/) {
     
-    var constructors = {};
-    var types = {};
-    var references = {};
-    var controllers = {};
-    
-    var socket = io.connect();
-    
-    exports.initialize = function() {
-        importFragments();
-        insertFragments();
-    };
-    
-    exports.error = function(message) {
-        console.log('ERROR: ' + message);
-    };
-    
-    exports.defineFragment = function(type, constructor) {
-        constructors[type] = constructor;
-    };
-    
-    exports.requireFragment = function(identifier) {
-        if (!references[identifier]) {
-            references[identifier] = {
-                fragment: {},
-                loaded: false
-            };
-        }
-        return references[identifier];
-    };
-    
-    function importFragments() {
-        var links = $(document).find('link[rel="import"]');
-        [].forEach.call(links, function (link) {
-            var element = link.import.querySelector('fragment');
-            var name = $(element).attr('name');
-            var fragment = Object.create(HTMLElement.prototype);
-            fragment.createdCallback = function() {
-                var clone = document.importNode(element, true);
-                this.innerHTML = clone.innerHTML;
-            };
-            types[name] = document.registerElement(name + '-fragment', { prototype: fragment });
-        });
-    }
-    
-    function insertFragments() {
-        var panels = $(document).find('panel');
-        [].forEach.call(panels, function(panel) {
-            var type = $(panel).attr('fragment');
-            exports.implementFragment(panel, type);
-        });
-    }
-    
-    exports.insertFragment = function(identifier, type, element) {
-        var fragment = exports.createFragment(identifier, type);
-        $(element).append(fragment);
-        return exports.requireFragment(identifier);
-    };
-    
-    exports.createFragment = function(identifier, type) {
-        var panel = document.createElement('panel');
-        $(panel).attr('id', identifier);
-        exports.implementFragment(panel, type);
-        angular.bootstrap($(panel), null);
-        return panel;
-    };
-    
-    exports.implementFragment = function(panel, type) {
-        var identifier = $(panel).attr('id');
-        var element = new types[type]();
-        $(panel).append(element);
-        if (identifier && constructors[type]) {
-            if (references[identifier]) {
-                references[identifier].instance = new constructors[type](element, socket);
-                references[identifier].loaded = true;
-            } else {
-                references[identifier] = {
-                    instance: new constructors[type](element, socket),
-                    loaded: true
+    if (!this.fizz) {
+        
+        var fizz = {};
+        fizz.library = {};
+        fizz.library.controllers = {};
+        fizz.library.elements = {};
+        fizz.library.references = {};
+        
+        fizz.application = angular.module('fizz', []);
+        
+        fizz.socket = {};//io.connect();
+        
+        var initialize = function() {
+            importFragments();
+            insertFragments();
+        };
+        
+        var importFragments = function() {
+            var links = $(document).find('link[rel="import"]');
+            [].forEach.call(links, function (link) {
+                var element = link.import.querySelector('fragment');
+                var type = $(element).attr('type');
+                var fragment = Object.create(HTMLElement.prototype);
+                fragment.createdCallback = function() {
+                    var clone = document.importNode(element, true);
+                    this.innerHTML = clone.innerHTML;
+                };
+                fizz.library.elements[type] = document.registerElement(type + '-fragment', { prototype: fragment });
+            });
+        };
+        
+        var insertFragments = function() {
+            var panels = $(document).find('panel');
+            [].forEach.call(panels, function(panel) {
+                construct($(panel));
+            });
+        };
+        
+        var define = function(type, constructor) {
+            fizz.library.controllers[type] = constructor;
+        };
+        
+        var require = function(identifier) {
+            if (!fizz.library.references[identifier]) {
+                fizz.library.references[identifier] = {
+                    controller: {},
+                    loaded: false
                 };
             }
-            if (references[identifier].instance.controller) {
-                controllers[identifier] = references[identifier].instance.controller;
-                $(panel).attr('ng-controller', 'Fizz.Fragments.Controllers.' + identifier);
+            return fizz.library.references[identifier];
+        };
+        
+        var error = function(message) {
+            console.log("ERROR: " + message);
+        };
+        
+        var implement = function(identifier, type, container) {
+            var panel = $(document.createElement('panel'));
+            panel.attr('id', identifier);
+            panel.attr('type', type);
+            construct(panel);
+            container.append(panel);
+            return fizz.library.references[identifier];
+        };
+        
+        var construct = function(panel) {
+            var identifier = panel.attr('id');
+            var type = panel.attr('type');
+            var element = new fizz.library.elements[type]();
+            panel.append(element);
+            if (identifier && fizz.library.controllers[type]) {
+                if (!fizz.library.references[identifier]) {
+                    fizz.library.references[identifier] = {
+                        controller: fizz.library.controllers[type],
+                        loaded: true
+                    };
+                } else {
+                    fizz.library.references[identifier].controller = fizz.library.controllers[type];
+                    fizz.library.references[identifier].loaded = true;
+                }
+                fizz.application.controller(identifier + '-controller', fizz.library.references[identifier].controller);
+                panel.attr('ng-app', 'fizz');
+                panel.attr('ng-controller', identifier + '-controller');
+                fizz.library.references[identifier].controller.element = element;
+                angular.bootstrap(panel, ['fizz']);
             }
-        }
-    };
+        };
+        
+        var destruct = function(panel) {
+            var identifier = panel.attr('id');
+            if (fizz.library.references[identifier]) {
+                fizz.library.references[identifier].controller = {};
+                fizz.library.references[identifier].loaded = false;
+            }
+        };
+        
+        this.fizz = {
+            initialize: initialize,
+            define: define,
+            require: require,
+            error: error,
+            implement: implement,
+            construct: construct,
+            destruct: destruct
+        };
+        
+    }
     
-    exports.destroyFragment = function(identifier) {
-        if (references[identifier]) {
-            references[identifier].instance = {};
-            references[identifier].loaded = false;
-        }
-    };
+    return this.fizz;
     
-    
-    
-    var Fragments = {};
-    Fragments.Constructors = constructors;
-    Fragments.Types = types;
-    Fragments.References = references;
-    Fragments.Controllers = controllers;
-    
-    exports.Fragments = Fragments;
-    
-})(Fizz);
+});

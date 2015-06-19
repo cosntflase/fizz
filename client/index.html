@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang="en" ng-app>
+<html lang="en">
 
     <head>
-        <title>Chat Example</title>
+        <title>Fizz</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="/css/bootstrap.min.css">
         <link rel="stylesheet" href="/css/bootstrap-responsive.min.css">
@@ -11,6 +11,11 @@
     
     <body>
         
+        <script src="/lib/require.js"></script>
+        
+        <!--<script src="/js/fizzing.js"></script>-->
+        
+        <!--
         <script src="/socket.io/socket.io.js"></script>
         <script src="/lib/jquery.min.js"></script>
         <script src="/lib/bootstrap.min.js"></script>
@@ -37,12 +42,23 @@
                 <span>Already a member? <a class="pointer" ng-click="toggleLoginRegister()">Login</a></span>
             </div>
         </div>
+        -->
+        
+        <link rel="import" href="/fragments/foo/foo.html" />
+        <link rel="import" href="/fragments/bar/bar.html" />
+        
+        <panel id="foo" type="Fizz-Foo"></panel>
+        <panel id="bar" type="Fizz-Bar"></panel>
+        <panel id="bars" type="Fizz-Bar"></panel>
         
         <script>
-            /* global Fizz angular */
-            angular.module('Fizz', ['ui.bootstrap']);
-            Fizz.initialize();
+        
+            require(['./js/fizz'], function(fizz) {
+                fizz.initialize();
+            });
+            
         </script>
+        
     
     </body>
 
