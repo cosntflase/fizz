@@ -1,12 +1,43 @@
 <script src="login.js"></script>
 <link rel="stylesheet" href="login.css" />
 
-<fragment name="Fizz-Login">
+<fragment type="Login">
     
-    <div>
-        <input id="email-input" type="email" class="form-control fizz-user-input" ng-model="user.email" />
-        <input id="password-input" type="password" class="form-control fizz-user-input" ng-model="user.password" />
-        <button class="btn btn-default" ng-click="login(user)">Login</button>
+    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target=".login-modal" ng-hide="user">Login</button>
+    <span class="btn-group inline" ng-show="user">
+        <button type="button" class="btn btn-default btn-lg">{{user.email}}</button>
+        <button type="button" class="btn btn-info btn-lg" ng-click="logout()">Logout</button>
+    </span>
+    
+    <div class="login-modal modal fade" role="dialog">
+        <div class="modal-dialog">
+    
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" ng-show="toggle">Login</h4>
+                    <h4 class="modal-title" ng-hide="toggle">Register</h4>
+                </div>
+                <div class="modal-body">
+                    <input id="email-input" type="email" class="form-control fizz-user-input" placeholder="Email" ng-model="input.email" ng-bind="test"/>
+                    <input id="password-input" type="password" class="form-control fizz-user-input" placeholder="Password" ng-model="input.password" />
+                </div>
+                <div class="modal-footer">
+                    <div class="inline">
+                        <button class="btn btn-info" ng-click="login(input)" ng-show="toggle">Login</button>
+                        <button class="btn btn-info" ng-click="register(input)" ng-hide="toggle">Register</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                    <div class="toggle-container" ng-show="toggle">
+                        <span>Not a member yet? <a class="pointer" ng-click="switch()">Register</a></span>
+                    </div>
+                    <div class="toggle-container" ng-hide="toggle">
+                        <span>Already a member? <a class="pointer" ng-click="switch()">Login</a></span>
+                    </div>
+                </div>
+            </div>
+    
+        </div>
     </div>
     
 </fragment>

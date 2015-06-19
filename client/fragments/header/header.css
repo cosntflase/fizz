@@ -1,0 +1,14 @@
+.header-container {
+    margin: .4em;
+    padding: 1em;
+    text-align: right;
+    background-color: #686868;
+    border-style: solid;
+    border-radius: .8em;
+    border-width: .2em;
+    border-color: #ACACAC;
+}
+
+.login-button {
+    text-align: left;
+}

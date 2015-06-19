@@ -42,17 +42,44 @@
                 <span>Already a member? <a class="pointer" ng-click="toggleLoginRegister()">Login</a></span>
             </div>
         </div>
-        -->
+        
         
         <link rel="import" href="/fragments/foo/foo.html" />
         <link rel="import" href="/fragments/bar/bar.html" />
         
         <panel id="foo" type="Fizz-Foo"></panel>
         <panel id="bar" type="Fizz-Bar"></panel>
-        <panel id="bars" type="Fizz-Bar"></panel>
+        -->
         
         <script>
         
+            require.config({
+                paths: {
+                    socketio: '../socket.io/socket.io'
+                }
+            });
+            
+            require.config({
+                shim: {
+                    'bootstrap/js/bootstrap-modal': { 
+                        deps: ['jquery']
+                    }
+                },
+                paths: {
+                    jquery: '/lib/jquery/dist/jquery'
+                }
+            });
+            
+        </script>
+        
+        <link rel="import" href="/fragments/login/login.html" />
+        <link rel="import" href="/fragments/header/header.html" />
+        <link rel="import" href="/fragments/project-browser/project-browser.html" />
+        
+        <panel id="header" type="Header"></panel>
+        
+        <script>
+            
             require(['./js/fizz'], function(fizz) {
                 fizz.initialize();
             });

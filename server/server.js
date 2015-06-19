@@ -2,7 +2,7 @@ var http = require('http');
 var path = require('path');
 
 var async = require('async');
-//var socketio = require('socket.io');
+var socketio = require('socket.io');
 var express = require('express');
 var session = require("express-session")({
     secret: "my-secret",
@@ -15,7 +15,7 @@ var fizz = require('./fizz/fizz.js');
 
 var router = express();
 var server = http.createServer(router);
-var io = require('socket.io')(server);
+var io = socketio(server);
 
 router.use(express.static(path.resolve(__dirname, '../client')));
 var sockets = [];

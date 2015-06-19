@@ -1,29 +1,59 @@
-/* global Fizz */
-
-Fizz.defineFragment('Fizz-Login', function(element, socket) {
-    var fragment = this;
-    
-    fragment.element = $(element);
-    fragment.socket = socket;
-    
-    fragment.login = function(user) {
-        fragment.socket.emit('fizz-user-login', {
-            user: user,
-            callback: 'fizz-user-login-response'
+require(['./js/fizz', 'jquery', 'bootstrap/js/bootstrap-modal'], function(fizz, $, bootstrap) {
+    var controller = function($scope) {
+        
+        $scope.toggle = true;
+        $scope.user = null;
+        
+        $scope.switch = function() {
+            $scope.toggle = !$scope.toggle;
+        };
+        
+        $scope.login = function(user) {
+            fizz.socket.emit('fizz-user-login', {
+                user: user,
+                callback: 'fizz-user-login-callback'
+            });
+        };
+        
+        fizz.socket.on('fizz-user-login-callback', function(data) {
+            if (!data.error) {
+                loginSuccess(data.user);
+            }
         });
-    };
-    
-    fragment.socket.on('fizz-user-login-response', function(data) {
-        if (!data.error && data.user) {
-            var user = data.user;
-            console.log("Logged in as: " + user.email);
-            var project = Fizz.insertFragment('project-browser', 'Fizz-Project-Browser', $('body'));
-            project.instance.loadUser();
+        
+        $scope.register = function(user) {
+            fizz.socket.emit('fizz-user-register', {
+                user: user,
+                callback: 'fizz-user-login-callback'
+            });
+        };
+        
+        fizz.socket.on('fizz-user-register-callback', function(data) {
+            if (!data.error) {
+                loginSuccess(data.user);
+            }
+        });
+        
+        function loginSuccess(user) {
+            $scope.user = user;
+            $scope.$apply();
+            var projectBrowser = fizz.implement('project-browser', 'Project-Browser', $('body'));
+            projectBrowser.controller.loadUser();
         }
-    });
-    
-    fragment.controller = function($scope) {
-        $scope.login = fragment.login;
+        
+        $scope.logout = function() {
+            fizz.socket.emit('fizz-user-logout', {
+                callback: 'fizz-user-logout-callback'
+            });
+        };
+        
+        fizz.socket.on('fizz-user-logout-callback', function(data) {
+            if (!data.error) {
+                $scope.user = null;
+                $scope.$apply();
+            }
+        });
+        
     };
-    
+    fizz.define('Login', controller);
 });

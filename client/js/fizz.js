@@ -1,5 +1,5 @@
 /* global io */
-define(['jquery', 'angular'/*, 'socketio'*/], function($, angular/*, io*/) {
+define(['jquery', 'angular', 'socketio'], function($, angular, io) {
     
     if (!this.fizz) {
         
@@ -9,13 +9,18 @@ define(['jquery', 'angular'/*, 'socketio'*/], function($, angular/*, io*/) {
         fizz.library.elements = {};
         fizz.library.references = {};
         
+        fizz.dependents = {};
+        
         fizz.application = angular.module('fizz', []);
         
-        fizz.socket = {};//io.connect();
+        fizz.socket = io.connect();
+        fizz.socket.on('connect', function(data) {
+            console.log('connected');
+        });
         
         var initialize = function() {
             importFragments();
-            insertFragments();
+            insertFragments($(document));
         };
         
         var importFragments = function() {
@@ -32,15 +37,23 @@ define(['jquery', 'angular'/*, 'socketio'*/], function($, angular/*, io*/) {
             });
         };
         
-        var insertFragments = function() {
-            var panels = $(document).find('panel');
+        var insertFragments = function(element) {
+            var panels = element.find('panel');
+            console.log(panels);
             [].forEach.call(panels, function(panel) {
                 construct($(panel));
             });
         };
         
-        var define = function(type, constructor) {
-            fizz.library.controllers[type] = constructor;
+        var define = function(type, controller) {
+            fizz.library.controllers[type] = controller;
+            console.log('defined: ' + type);
+            console.log(controller);
+            if (fizz.dependents[type]) {
+                fizz.dependents[type].forEach(function(dependent) {
+                    link(dependent.panel, dependent.identifier,  dependent.type);
+                });
+            }
         };
         
         var require = function(identifier) {
@@ -63,6 +76,7 @@ define(['jquery', 'angular'/*, 'socketio'*/], function($, angular/*, io*/) {
             panel.attr('type', type);
             construct(panel);
             container.append(panel);
+            angular.bootstrap(panel, ['fizz']);
             return fizz.library.references[identifier];
         };
         
@@ -72,21 +86,36 @@ define(['jquery', 'angular'/*, 'socketio'*/], function($, angular/*, io*/) {
             var element = new fizz.library.elements[type]();
             panel.append(element);
             if (identifier && fizz.library.controllers[type]) {
-                if (!fizz.library.references[identifier]) {
-                    fizz.library.references[identifier] = {
-                        controller: fizz.library.controllers[type],
-                        loaded: true
-                    };
-                } else {
-                    fizz.library.references[identifier].controller = fizz.library.controllers[type];
-                    fizz.library.references[identifier].loaded = true;
-                }
-                fizz.application.controller(identifier + '-controller', fizz.library.references[identifier].controller);
-                panel.attr('ng-app', 'fizz');
-                panel.attr('ng-controller', identifier + '-controller');
-                fizz.library.references[identifier].controller.element = element;
-                angular.bootstrap(panel, ['fizz']);
+                link(panel, identifier, type);
+            } else if (identifier) {
+                if (!fizz.dependents[type]) fizz.dependents[type] = [];
+                fizz.dependents[type].push({
+                    panel: panel,
+                    identifier: identifier,
+                    type: type
+                });
             }
+            insertFragments($(panel));
+        };
+        
+        var link = function(panel, identifier, type) {
+            if (!fizz.library.references[identifier]) {
+                console.log('pre');
+                fizz.library.references[identifier] = {
+                    controller: fizz.library.controllers[type],
+                    loaded: true
+                };
+                console.log('controller');
+                console.log(fizz.library.references[identifier].controller);
+            } else {
+                fizz.library.references[identifier].controller = fizz.library.controllers[type];
+                fizz.library.references[identifier].loaded = true;
+                console.log('controller');
+                console.log(fizz.library.references[identifier].controller);
+            }
+            fizz.application.controller(identifier + '-controller', fizz.library.references[identifier].controller);
+            panel.attr('ng-app', 'fizz');
+            panel.attr('ng-controller', identifier + '-controller');
         };
         
         var destruct = function(panel) {
@@ -98,6 +127,7 @@ define(['jquery', 'angular'/*, 'socketio'*/], function($, angular/*, io*/) {
         };
         
         this.fizz = {
+            socket: fizz.socket,
             initialize: initialize,
             define: define,
             require: require,

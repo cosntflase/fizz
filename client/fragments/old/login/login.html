@@ -1,0 +1,12 @@
+<script src="login.js"></script>
+<link rel="stylesheet" href="login.css" />
+
+<fragment name="Fizz-Login">
+    
+    <div>
+        <input id="email-input" type="email" class="form-control fizz-user-input" ng-model="user.email" />
+        <input id="password-input" type="password" class="form-control fizz-user-input" ng-model="user.password" />
+        <button class="btn btn-default" ng-click="login(user)">Login</button>
+    </div>
+    
+</fragment>
