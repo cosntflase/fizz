@@ -16,7 +16,7 @@
     
     <body>
         
-        <script src="/lib/require.js"></script>
+        <script data-main='main.js' src="/lib/require.js"></script>
         
         <!--<script src="/js/fizzing.js"></script>-->
         
@@ -85,15 +85,6 @@
         
         <panel id="header" type="Header"></panel>
         
-        <script>
-            
-            require(['./js/fizz'], function(fizz) {
-                fizz.initialize();
-            });
-            
-        </script>
-        
-    
     </body>
 
 </html>

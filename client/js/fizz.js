@@ -39,7 +39,7 @@ define(['jquery', 'angular', 'socketio'], function($, angular, io) {
         var insertFragments = function(element) {
             var panels = element.find('panel');
             [].forEach.call(panels, function(panel) {
-                $(panel).attr('id', $(panel).attr('id') + '-' + fizz.fragmentCount++);
+                $(panel).attr('id', $(panel).attr('id')/* + '-' + fizz.fragmentCount++*/);
                 construct($(panel));
             });
         };
@@ -75,8 +75,6 @@ define(['jquery', 'angular', 'socketio'], function($, angular, io) {
             var linkedController = construct(panel, callback);
             container.append(panel);
             angular.bootstrap(panel, ['fizz']);
-            
-            console.log(fizz.library.references);
             if (callback && linkedController) callback(fizz.library.references[identifier]);
             return fizz.library.references[identifier];
         };
