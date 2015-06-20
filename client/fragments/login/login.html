@@ -3,13 +3,13 @@
 
 <fragment type="Login">
     
-    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target=".login-modal" ng-hide="user">Login</button>
+    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target=".fizz-user-modal" ng-hide="user">Login</button>
     <span class="btn-group inline" ng-show="user">
         <button type="button" class="btn btn-default btn-lg">{{user.email}}</button>
         <button type="button" class="btn btn-info btn-lg" ng-click="logout()">Logout</button>
     </span>
     
-    <div class="login-modal modal fade" role="dialog">
+    <div class="fizz-user-modal modal fade" role="dialog">
         <div class="modal-dialog">
     
             <div class="modal-content">
@@ -28,10 +28,10 @@
                         <button class="btn btn-info" ng-click="register(input)" ng-hide="toggle">Register</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
-                    <div class="toggle-container" ng-show="toggle">
+                    <div class="fizz-toggle-container" ng-show="toggle">
                         <span>Not a member yet? <a class="pointer" ng-click="switch()">Register</a></span>
                     </div>
-                    <div class="toggle-container" ng-hide="toggle">
+                    <div class="fizz-toggle-container" ng-hide="toggle">
                         <span>Already a member? <a class="pointer" ng-click="switch()">Login</a></span>
                     </div>
                 </div>

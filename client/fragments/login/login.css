@@ -1,3 +1,8 @@
-.toggle-container {
+.fizz-toggle-container {
     padding-top: .6em;
+}
+
+.fizz-user-input {
+    margin-top: .6em;
+    margin-bottom: .6em;
 }

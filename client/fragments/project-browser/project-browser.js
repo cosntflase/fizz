@@ -3,6 +3,7 @@ require(['./js/fizz', 'bootstrap/js/bootstrap-modal'], function(fizz, bootstrap)
     var controller = function($scope) {
         
         var projectName;
+        var fileBrowser;
         
         $scope.projects = [];
         $scope.createProject = function(newProjectName) {
@@ -13,7 +14,7 @@ require(['./js/fizz', 'bootstrap/js/bootstrap-modal'], function(fizz, bootstrap)
             });
         };
         $scope.selectProject = function(project) {
-            controller.fileBrowser.instance.loadProject(project);
+            fileBrowser.controller.loadProject(project);
         };
         
         var populateProjects = function(directory) {
@@ -30,7 +31,7 @@ require(['./js/fizz', 'bootstrap/js/bootstrap-modal'], function(fizz, bootstrap)
             if (!data.error) {
                 populateProjects(data.directory);
                 console.log("didit");
-                //controller.fileBrowser = fizz.implement('file-browser', 'Fizz-File-Browser', $('body'));
+                fileBrowser = fizz.implement('file-browser', 'File-Browser', $('body'));
             }
         });
         

@@ -21,7 +21,8 @@
             "jquery": "*",
             "angular": "*",
             "bootstrap": "*",
-            "socket.io": "*"
+            "socket.io": "*",
+            "ace": "*"
         }
     },
     "scripts": {

@@ -14,13 +14,12 @@ define(['jquery', 'angular', 'socketio'], function($, angular, io) {
         fizz.application = angular.module('fizz', []);
         
         fizz.socket = io.connect();
-        fizz.socket.on('connect', function(data) {
-            console.log('connected');
-        });
+        fizz.fragmentCount = 0;
         
         var initialize = function() {
             importFragments();
             insertFragments($(document));
+            //angular.bootstrap($(document), ['fizz']);
         };
         
         var importFragments = function() {
@@ -39,19 +38,18 @@ define(['jquery', 'angular', 'socketio'], function($, angular, io) {
         
         var insertFragments = function(element) {
             var panels = element.find('panel');
-            console.log(panels);
             [].forEach.call(panels, function(panel) {
+                $(panel).attr('id', $(panel).attr('id') + '-' + fizz.fragmentCount++);
                 construct($(panel));
             });
         };
         
         var define = function(type, controller) {
             fizz.library.controllers[type] = controller;
-            console.log('defined: ' + type);
-            console.log(controller);
             if (fizz.dependents[type]) {
                 fizz.dependents[type].forEach(function(dependent) {
                     link(dependent.panel, dependent.identifier,  dependent.type);
+                    if (dependent.callback) dependent.callback(fizz.library.references[dependent.identifier]);
                 });
             }
         };
@@ -70,48 +68,51 @@ define(['jquery', 'angular', 'socketio'], function($, angular, io) {
             console.log("ERROR: " + message);
         };
         
-        var implement = function(identifier, type, container) {
+        var implement = function(identifier, type, container, callback) {
             var panel = $(document.createElement('panel'));
-            panel.attr('id', identifier);
+            panel.attr('id', identifier/* + '-' + fizz.fragmentCount++*/);
             panel.attr('type', type);
-            construct(panel);
+            var linkedController = construct(panel, callback);
             container.append(panel);
             angular.bootstrap(panel, ['fizz']);
+            
+            console.log(fizz.library.references);
+            if (callback && linkedController) callback(fizz.library.references[identifier]);
             return fizz.library.references[identifier];
         };
         
-        var construct = function(panel) {
+        var construct = function(panel, callback) {
             var identifier = panel.attr('id');
             var type = panel.attr('type');
             var element = new fizz.library.elements[type]();
+            var linkedController;
             panel.append(element);
             if (identifier && fizz.library.controllers[type]) {
-                link(panel, identifier, type);
+                link(panel, identifier, type, callback);
+                linkedController = true;
             } else if (identifier) {
                 if (!fizz.dependents[type]) fizz.dependents[type] = [];
                 fizz.dependents[type].push({
                     panel: panel,
                     identifier: identifier,
-                    type: type
+                    type: type,
+                    callback: callback
                 });
+                linkedController = false;
             }
             insertFragments($(panel));
+            return linkedController;
         };
         
         var link = function(panel, identifier, type) {
             if (!fizz.library.references[identifier]) {
-                console.log('pre');
                 fizz.library.references[identifier] = {
                     controller: fizz.library.controllers[type],
                     loaded: true
                 };
-                console.log('controller');
-                console.log(fizz.library.references[identifier].controller);
             } else {
                 fizz.library.references[identifier].controller = fizz.library.controllers[type];
                 fizz.library.references[identifier].loaded = true;
-                console.log('controller');
-                console.log(fizz.library.references[identifier].controller);
             }
             fizz.application.controller(identifier + '-controller', fizz.library.references[identifier].controller);
             panel.attr('ng-app', 'fizz');

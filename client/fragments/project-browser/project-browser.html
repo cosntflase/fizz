@@ -3,7 +3,7 @@
 
 <fragment type="Project-Browser">
     
-    <div>
+    <div class="container">
     
         <!-- Trigger the modal with a button -->
         <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target=".new-project-modal">New Project</button>
@@ -30,8 +30,8 @@
             </div>
         </div>
         
-        <ul class="list-group" ng-repeat="project in projects">
-            <li class="list-group-item" class="pointer" ng-click="selectProject(project)">{{project}}</span>
+        <ul class="list-group fizz-project-group" ng-repeat="project in projects">
+            <li class="list-group-item pointer" ng-click="selectProject(project)">{{project}}</li>
         </ul>
         
     </div>

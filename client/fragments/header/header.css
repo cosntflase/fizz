@@ -1,14 +1,35 @@
+/*
 .header-container {
+    text-align: right;
     margin: .4em;
     padding: 1em;
-    text-align: right;
     background-color: #686868;
     border-style: solid;
     border-radius: .8em;
     border-width: .2em;
     border-color: #ACACAC;
+    width: 80em;
+    margin-left: auto;
+    margin-right: auto;
+}
+*/
+
+.navbar-default {
+    margin: .4em;
 }
 
-.login-button {
+.fizz-icon {
+    margin-top: .8em;
+    margin-bottom: .8em;
+    width: 3.2em;
+    height: 3.2em;
+}
+
+.navbar-header {
+    width: 100%;
+}
+
+.fizz-login-button {
     text-align: left;
+    margin: .6em;
 }
