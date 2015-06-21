@@ -1,0 +1,5 @@
+#!/bin/bash
+
+rm data -r
+rm client/lib/* -r
+rm node_modules -r

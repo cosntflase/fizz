@@ -25,6 +25,10 @@
     height: 3.2em;
 }
 
+.shine {
+    fill: white;
+}
+
 .navbar-header {
     width: 100%;
 }

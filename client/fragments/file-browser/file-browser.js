@@ -1,4 +1,4 @@
-require(['./js/fizz', 'bootstrap/js/bootstrap-modal'], function(fizz, bootstrap) {
+require(['fizz', 'bootstrap/modal'], function(fizz, bootstrap) {
     var controller = function($scope) {
         
         var editor;
@@ -20,10 +20,13 @@ require(['./js/fizz', 'bootstrap/js/bootstrap-modal'], function(fizz, bootstrap)
             });
         };
         
+        controller.linkEditor = function(editorToLink) {
+            editor = editorToLink;
+        };
+        
         fizz.socket.on('fizz-file-loadProject-response', function(data) {
             if (!data.error) {
                 loadProjectFiles(data.directory);
-                editor = fizz.implement('editor', 'Editor', $('body'));
             }
         });
         

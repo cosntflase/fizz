@@ -1,5 +1,6 @@
-require(['./js/fizz', 'jquery', 'bootstrap/js/bootstrap-modal'], function(fizz, $, modal) {
+require(['fizz', 'jquery', 'bootstrap/modal'], function(fizz, $, modal) {
     var controller = function($scope, $element) {
+        
         
         $scope.toggle = true;
         $scope.user = null;
@@ -37,9 +38,8 @@ require(['./js/fizz', 'jquery', 'bootstrap/js/bootstrap-modal'], function(fizz, 
         function loginSuccess(user) {
             $scope.user = user;
             $scope.$apply();
-            //$element.find('.fizz-user-modal').modal('hide');
+            $element.find('.fizz-user-modal').modal('hide');
             fizz.implement('project-browser', 'Project-Browser', $('body'), function(projectBrowser) {
-                console.log(projectBrowser);
                 projectBrowser.controller.loadUser();
             });
         }

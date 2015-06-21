@@ -1,0 +1,29 @@
+{
+  "name": "fizz",
+  "version": "0.0.0",
+  "authors": [
+    "Cosnt Flase <cosntflase@gmail.com>"
+  ],
+  "description": "A browser based game engine and editor.",
+  "keywords": [
+    "fizz"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "requirejs": "*",
+    "webcomponentsjs": "*",
+    "jquery": "*",
+    "angular": "*",
+    "bootstrap": "*",
+    "socket.io": "*",
+    "ace": "*",
+    "svg-injector": "~1.1.2"
+  }
+}

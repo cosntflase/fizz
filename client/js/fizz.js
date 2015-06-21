@@ -1,5 +1,8 @@
-/* global io */
 define(['jquery', 'angular', 'socketio'], function($, angular, io) {
+    
+    $(window).on('beforeunload', function(){
+        fizz.socket.close();
+    });
     
     if (!this.fizz) {
         

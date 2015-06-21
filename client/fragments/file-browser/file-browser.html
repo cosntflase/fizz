@@ -3,10 +3,8 @@
 
 <fragment type="File-Browser">
     
-    <div>
-        <div ng-repeat="file in files">
-            <span class="pointer" ng-click="selectFile(file)">{{file}}</span>
-        </div>
-    </div>
+    <ul class="list-group fizz-file-group">
+        <li class="list-group-item fizz-file pointer" ng-click="selectFile(file)" ng-repeat="file in files">{{file}}</li>
+    </ul>
     
 </fragment>

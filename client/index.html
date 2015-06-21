@@ -4,82 +4,22 @@
     <head>
         <title>Fizz</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!--
-        <link rel="stylesheet" href="/css/bootstrap.min.css">
-        <link rel="stylesheet" href="/css/bootstrap-responsive.min.css">
-        -->
         
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+
         <link rel="stylesheet" href="/css/fizz.css">
+        
     </head>
     
     <body>
         
-        <script data-main='main.js' src="/lib/require.js"></script>
-        
-        <!--<script src="/js/fizzing.js"></script>-->
-        
-        <!--
-        <script src="/socket.io/socket.io.js"></script>
-        <script src="/lib/jquery.min.js"></script>
-        <script src="/lib/bootstrap.min.js"></script>
-        <script src="/lib/angular.min.js"></script>
-        
-        <script src="/js/fizz.js"></script>
-        <script src="/js/controllers/index.js"></script>
-    
-        <link rel="import" href="/fragments/login/login.html">
-        <link rel="import" href="/fragments/logout/logout.html">
-        <link rel="import" href="/fragments/register/register.html">
-        <link rel="import" href="/fragments/unregister/unregister.html">
-        <link rel="import" href="/fragments/project-browser/project-browser.html">
-        <link rel="import" href="/fragments/file-browser/file-browser.html">
-        <link rel="import" href="/fragments/editor/editor.html">
-        
-        <div ng-controller="IndexController">
-            <div ng-show="toggle">
-                <panel id="login" fragment="Fizz-Login"></panel>
-                <span>Not a member yet? <a class="pointer" ng-click="toggleLoginRegister()">Register</a></span>
-            </div>
-            <div ng-hide="toggle">
-                <panel id="logout" fragment="Fizz-Register"></panel>
-                <span>Already a member? <a class="pointer" ng-click="toggleLoginRegister()">Login</a></span>
-            </div>
-        </div>
-        
-        
-        <link rel="import" href="/fragments/foo/foo.html" />
-        <link rel="import" href="/fragments/bar/bar.html" />
-        
-        <panel id="foo" type="Fizz-Foo"></panel>
-        <panel id="bar" type="Fizz-Bar"></panel>
-        -->
-        
-        <script>
-        
-            require.config({
-                paths: {
-                    socketio: '../socket.io/socket.io'
-                }
-            });
-            
-            require.config({
-                shim: {
-                    'bootstrap/js/bootstrap-modal': { 
-                        deps: ['jquery']
-                    }
-                },
-                paths: {
-                    jquery: '/lib/jquery/dist/jquery'
-                }
-            });
-            
-        </script>
+        <script data-main='main.js' src="/lib/requirejs/require.js"></script>
         
         <link rel="import" href="/fragments/login/login.html" />
         <link rel="import" href="/fragments/header/header.html" />
         <link rel="import" href="/fragments/project-browser/project-browser.html" />
+        <link rel="import" href="/fragments/development-environment/development-environment.html" />
         <link rel="import" href="/fragments/file-browser/file-browser.html" />
         <link rel="import" href="/fragments/editor/editor.html" />
         

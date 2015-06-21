@@ -4,35 +4,68 @@
 <fragment type="Project-Browser">
     
     <div class="container">
-    
-        <!-- Trigger the modal with a button -->
-        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target=".new-project-modal">New Project</button>
         
-        <!-- Modal -->
-        <div class="new-project-modal modal fade" role="dialog">
+        <div class="project-modal modal fade" role="dialog" ng-model="projectModal">
             <div class="modal-dialog">
-        
-                <!-- Modal content-->
+                
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Projects</h4>
+                    </div>
+                    <div class="modal-body">
+                        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" ng-click="newProject()">New Project</button>
+                        <ul class="list-group fizz-project-group">
+                            <li class="list-group-item pointer" ng-click="selectProject(project)" ng-repeat="project in projects">
+                                <span>{{project}}</span>
+                                <span class="glyphicon glyphicon-remove-sign pull-right" ng-click="deleteProject($event, project)"></span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+        <div class="new-project-modal modal fade" role="dialog" ng-model="newProjectModal">
+            <div class="modal-dialog">
+            
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" ng-click="cancelNewProject()">&times;</button>
                         <h4 class="modal-title">Create a new project</h4>
                     </div>
                     <div class="modal-body">
-                        <input class="name" type="text" ng-model="newProjectName" placeholder="New project!" />
+                        <input class="name form-control" type="text" ng-model="newProjectName" placeholder="New project!" />
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" ng-click="createProject(newProjectName)">Create</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-default" ng-click="cancelNewProject()">Cancel</button>
                     </div>
                 </div>
         
             </div>
         </div>
         
-        <ul class="list-group fizz-project-group" ng-repeat="project in projects">
-            <li class="list-group-item pointer" ng-click="selectProject(project)">{{project}}</li>
-        </ul>
+        <div class="delete-project-modal modal fade" role="dialog" ng-model="deleteProjectModal">
+            <div class="modal-dialog">
+                
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" ng-click="cancelDeleteProject()">&times;</button>
+                        <h4 class="modal-title">Delete Project</h4>
+                    </div>
+                    <div class="modal-body">
+                        <span>Enter the project name below:</span>
+                        <input class="delete-input form-control" type="text" ng-model="confirmation" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-warning btn-lg" ng-click="deleteProjectConfirm(confirmation)">Delete</button>
+                        <button type="button" class="btn btn-primary btn-lg" ng-click="cancelDeleteProject()">Cancel</button>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
         
     </div>
     
